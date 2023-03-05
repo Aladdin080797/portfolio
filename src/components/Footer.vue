@@ -2,7 +2,7 @@
   <footer class="footer">
     <div>
         <font-awesome-icon class="copyright-icon" icon="copyright"/> 
-        2022 {{user.name}} 
+        2023 {{user.name}} 
     </div>
     <SocialBar :links="links"/>
   </footer>

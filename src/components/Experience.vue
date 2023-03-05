@@ -13,12 +13,12 @@
 			<div class="row">
 				<ExperienceColumn
 					:posts="content.metadata.academic"
-					title="Education"
+					title="Bildung"
 					class="col-12 col-md left"
 				/>
 				<ExperienceColumn
 					:posts="content.metadata.professional"
-					title="Professional"
+					title="Professionell"
 					class="col-12 col-md right"
 				/>
 			</div>
