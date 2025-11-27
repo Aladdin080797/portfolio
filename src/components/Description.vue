@@ -4,41 +4,41 @@
             <Title :title="content.metadata.title" :description="content.metadata.description" />
         </AnimateOnVisible>
 
-        <AnimateOnVisible name="fadeRight" :duration="1">
             <div class="section-content">
                 <div class="container-fluid">
-                    <div class="row justify-content-center">
-                        <Photo :user="user"/>
-                    </div>
                     <div class="row">
                         <div class="col-md-7 mr-auto card-mobile">
-                            <Presentation :content="content"/>
+                            <AnimateOnVisible name="fadeRight" :duration="1">
+                                <Photo :user="user"/>
+                            </AnimateOnVisible>
+                           
                         </div>
-                        <div class="col-md-4 card-mobile">
-                            <PersonnalCard :user="user" :links="links"/>
+                        <div class="col-md-4 mr-auto card-mobile">
+                            <AnimateOnVisible name="fadeLeft" :duration="1">
+                                <PersonnalCard :user="user"/>
+                            </AnimateOnVisible>
                         </div>
                     </div>
                 </div>
             </div>
-        </AnimateOnVisible>
     </section>
 </template>
 
 <script>
     import Title from './Title.vue'
     import PersonnalCard from './PersonnalCard.vue'
-    import Presentation from './Presentation.vue'
+    //import Presentation from './Presentation.vue'
     import Photo from './Photo.vue'
 
     export default {
         name: 'AboutMe',
-        props: ['user', 'content', 'links'],
+        props: ['user', 'content'],
         components: {
             Title,
             PersonnalCard,
-            Presentation,
+     //       Presentation,
             Photo
-        },
+        }
     }
 </script>
 

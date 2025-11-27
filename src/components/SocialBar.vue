@@ -2,18 +2,15 @@
   <div class="social-wrap">
     <ul>
       <li>
-        <a :href="links.metadata.instagram" target="_blank">
-          <font-awesome-icon class="icon" :icon="['fab', 'instagram-square']" />
+        <a :href="user.linkedIn" target="_blank">
+          <font-awesome-icon class="icon" :icon="['fab', 'linkedin-in']" 
+                             title="linkedin profile"/>
         </a>
       </li>
       <li>
-        <a :href="links.metadata.linkedin" target="_blank">
-          <font-awesome-icon class="icon" :icon="['fab', 'linkedin']" />
-        </a>
-      </li>
-      <li>
-        <a :href="links.metadata.github" target="_blank">
-          <font-awesome-icon class="icon" :icon="['fab', 'github-square']" />
+        <a v-if="user.resume" :href="user.resume.url" target="_blank">
+          <font-awesome-icon class="icon" :icon="['fas', 'download']" 
+                             title="Download Resume"/>
         </a>
       </li>
     </ul>
@@ -23,7 +20,7 @@
 <script>
     export default {
         name: 'SocialBar',
-        props: ['links'],
+        props: ['user']
     }
 </script>
 
@@ -35,7 +32,12 @@
       margin-right: 10px;
     }
     .icon {
-      font-size: 3rem;
+      font-size: 3rem; 
+      width: 3rem; 
+      height: 3rem;
+      line-height: 3rem;
+      text-align: center;     
+      vertical-align: middle;
     }
   }
 </style>

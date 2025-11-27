@@ -1,10 +1,10 @@
 <template>
-  <footer class="footer">
+  <footer :class="['footer', { sticky: sticky }]">
     <div>
         <font-awesome-icon class="copyright-icon" icon="copyright"/> 
-        2023 {{user.name}} 
+        {{currentYear}} {{user.name}} 
     </div>
-    <SocialBar :links="links"/>
+    <SocialBar :user="user"/>
   </footer>
 </template>
 
@@ -12,44 +12,62 @@
 import SocialBar from './SocialBar'
 export default {
   name: 'Footer',
-  props: ['user', 'links'],
+  props: {
+    user: Object,
+    sticky: Boolean
+  },
   components: {
     SocialBar,
   },
+  computed: {
+    currentYear() {
+      return new Date().getFullYear()
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
-  @import '@/styles/constants.scss';
+@import '@/styles/constants.scss';
 
-  $bg-footer: map-get($colors, primary) !default;
+$bg-footer: map-get($colors, primary) !default;
 
-  .footer {
-    padding: 10px 20px 10px 20px;
-    background-color: $bg-footer;
-    color: map-get($colors, light);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.footer {
+  padding: 10px 20px;
+  background-color: $bg-footer;
+  color: map-get($colors, light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 
-  .copyright-icon{
-      font-size: 1.5rem;
-      vertical-align: middle;
-  }
+/* Sticky only when needed */
+.footer.sticky {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+}
 
-  /deep/ .social-wrap {
-    float: right;
-    .icon {
-      font-size: 2.8rem;
-      &:hover {
-        color: map-get($colors, light);
-      }
+.copyright-icon {
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+
+::v-deep .social-wrap {
+  float: right;
+
+  .icon {
+    font-size: 2.8rem;
+
+    &:hover {
+      color: map-get($colors, light);
     }
   }
+}
 
-  /deep/ li{
-      margin-bottom: 0 !important;
-  }
-
+::v-deep li {
+  margin-bottom: 0 !important;
+}
 </style>

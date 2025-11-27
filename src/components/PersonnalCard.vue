@@ -5,7 +5,7 @@
     <div class="data"><strong>Tel.:</strong> {{ user.phone }}</div>
     <div class="data"><strong>Stadt:</strong> {{ user.city }}</div>
     <div class="data"><strong>Sprachen:</strong> {{ user.lang }}</div>
-    <SocialBar :links="links"/>
+    <SocialBar :user="user"/>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import SocialBar from './SocialBar.vue'
 
 export default {
     name: 'PersonnalCard',
-    props: ['user', 'links'],
+    props: ['user'],
     components: {
         SocialBar,
     }

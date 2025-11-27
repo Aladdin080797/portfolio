@@ -13,12 +13,12 @@
 			<div class="row">
 				<ExperienceColumn
 					:posts="content.metadata.academic"
-					title="Bildung"
+					title="Education"
 					class="col-12 col-md left"
 				/>
 				<ExperienceColumn
 					:posts="content.metadata.professional"
-					title="Professionell"
+					title="Professional"
 					class="col-12 col-md right"
 				/>
 			</div>
@@ -74,17 +74,17 @@ $linear: map-get($colors, dark);
     margin-top: 20px;
   }
   .left:before {
-    content : "";
+    content: "";
     position: absolute;
-    left    : 20%;
-    bottom  : 0;
-    height  : 2px;
-    width   : 60%;  /* or 100px */
-    border-bottom:2px solid $linear;
-}
+    left: 20%;
+    bottom: 0;
+    height: 2px;
+    width: 60%;
+    border-bottom: 2px solid $linear;
+  }
 }
 
-/deep/ .text-wrapper {
+::v-deep .text-wrapper {
   &:after {
     border-bottom: 1px solid map-get($colors, dark);
   }

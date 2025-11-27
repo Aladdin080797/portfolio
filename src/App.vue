@@ -2,11 +2,11 @@
   <transition name="fade" tag="div" class="wrapper" mode="out-in">
     <div class="wrapper" v-if="isLoaded" id="app">
       <LandingPage :user="user" />
-      <Description :user="user" :content="findSlug('description')" :links="findSlug('links')" />
       <Experience :content="findSlug('experiences')" />
-      <Skills :content="findSlug('skills')" />
-      <Projects :content="findSlug('projects')" />
-      <Footer :user="user" :links="findSlug('links')" />
+      <Skills :content="findSlug('skills')"/>
+      <Projects :content="findSlug('projects')"/>
+      <Description :user="user" :content="findSlug('description')"/>
+      <Footer :user="user" :sticky="showStickyFooter"/>
     </div>
   </transition>
 </template>
@@ -34,54 +34,88 @@ export default {
   data: () => ({
     isLoaded: false,
     user: {},
-    posts: [],
+    description: [],
+    experiences:[],
+    skills: [],
+    projects: [],
+    showStickyFooter: false,
   }),
   methods: {
-    fetchPosts() {
-      return bucket.getObjects({
-        type: "posts",
-        props: "slug,title,metadata",
-      });
+    fetchType(type) {
+      return bucket.objects.find({
+       type: type,
+      }).props("slug,title,metadata").limit(1);
     },
     fetchUser() {
-      return bucket.getObjects({
-        id: '61d058c66b47240008eb5538',
-        q: "data_de",
-        props: 'slug,title,metadata'
-      });
-    },
-    fetchObjectTypes() {
-      return bucket.getObjectTypes();
+      return bucket.objects.findOne({
+        type: "portfolio-metadata",
+        slug: "portfolio-info"
+      }).props("title,metadata")
+      .depth(1);
     },
     findSlug(slug) {
-      return this.posts.find((item) => {
+      return this.$data[slug]?.find((item) => {
         return item.slug === slug;
       });
     },
     extractFirstObject(objects) {
-      if(objects.objects == null)
-        return void 0;
-      else
-        return objects.objects[0];
+      return objects.object === null ? void 0 : objects.object;
+    },
+    checkLandingPageVisibility() {
+      this.showStickyFooter = window.scrollY > 50
+    },
+  },
+  async created() {
+    document.body.classList.add("loading");
+
+    try {
+      const [descriptionRes, userRes, experiencesRes, skillsRes, projectsRes] =
+      await Promise.all([this.fetchType("description"), this.fetchUser(),
+        this.fetchType("experiences"), this.fetchType("skills"), 
+        this.fetchType("projects")]);
+
+      this.description = descriptionRes && Array.isArray(descriptionRes.objects) ? 
+        descriptionRes.objects : [];
+      this.experiences = experiencesRes && Array.isArray(experiencesRes.objects) ? 
+        experiencesRes.objects : [];
+      this.skills = skillsRes && Array.isArray(skillsRes.objects) ? 
+        skillsRes.objects : [];
+      this.projects = projectsRes && Array.isArray(projectsRes.objects) ? 
+        projectsRes.objects : [];
+
+      const userObject = this.extractFirstObject(userRes);
+
+      this.user = {
+      name: (userObject && userObject.metadata && userObject.metadata.name) || "",
+      status: (userObject && userObject.metadata && userObject.metadata.status) || "",
+      email: (userObject && userObject.metadata && userObject.metadata.email) || "",
+      phone: (userObject && userObject.metadata && userObject.metadata.phone) || "",
+      city: (userObject && userObject.metadata && userObject.metadata.city) || "",
+      lang: (userObject && userObject.metadata && userObject.metadata.lang) || "",
+      photo: (userObject && userObject.metadata && userObject.metadata.photo) || "",
+      linkedIn: (userObject && userObject.metadata && userObject.metadata.linkedin_url) || "",
+      resume:  (userObject && userObject.metadata && userObject.metadata.resume) || ""
+      };
+
+      console.log(this.user)
+
+      this.isLoaded = true;
+      this.$nextTick(() => {
+        this.checkLandingPageVisibility();
+        window.addEventListener("scroll", this.checkLandingPageVisibility);
+      });
+    } catch (err) {
+      console.error("Failed to load portfolio data:", err);
+      this.description = this.description || [];
+      this.experiences = this.experiences || [];
+      this.skills = this.skills || [];
+      this.projects = this.projects || [];
+    } finally {
+      document.body.classList.remove("loading");
     }
   },
-  created() {
-    document.body.classList.add("loading");
-    Promise.all([this.fetchPosts(), this.fetchUser()]).then(([posts, user_data]) => {
-      user_data = this.extractFirstObject(user_data);
-      this.posts = posts.objects;
-      this.user = {
-        name: user_data.metadata.name,
-        status: user_data.metadata.status,
-        email: user_data.metadata.email,
-        phone: user_data.metadata.phone,
-        city: user_data.metadata.city,
-        lang: user_data.metadata.lang,
-        photo: user_data.metadata.photo,
-      }
-      this.isLoaded = true;
-      this.$nextTick(() => document.body.classList.remove("loading"));
-    });
+  beforeUnmount() {
+    window.removeEventListener("scroll", this.checkLandingPageVisibility);
   },
 };
 </script>

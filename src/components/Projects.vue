@@ -16,7 +16,7 @@
         :date="new Date(post.date)"
         :title="post.title"
         :description="post.content"
-        :thumbnail="getImgUrl(post.image)"
+        :thumbnail="post.image?.url"
         :color="post.color"
         :category="post.tag"
         icon="code"
@@ -36,13 +36,6 @@ export default {
   components: {
     Title
   },
-  methods: {
-    getImgUrl(img) {
-      if(img == undefined || img == "")
-        return ""
-      return require('../assets/img/projects/'+img)
-    },
-  },
 };
 </script>
 
@@ -60,7 +53,7 @@ $linear: map-get($colors, dark);
   color: map-get($colors, light);
 }
 
-/deep/ .text-wrapper {
+::v-deep .text-wrapper {
   &:after {
     border-bottom: 1px solid map-get($colors, dark);
   }
@@ -93,5 +86,9 @@ article .inner {
 h1 {
     margin-top: 10px;
     margin-bottom: 20px;
+}
+
+::v-deep .gb-vue-timeline-update__line {
+  background-color: #ffffff !important;
 }
 </style>

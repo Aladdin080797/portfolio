@@ -11,11 +11,11 @@ import VueTimeline from "@growthbunker/vuetimeline";
 Vue.use(VueTimeline);
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCopyright} from '@fortawesome/free-solid-svg-icons'
-import { faFacebookSquare, faInstagramSquare, faLinkedin, faGithubSquare } from '@fortawesome/free-brands-svg-icons'
+import { faCopyright, faDownload} from '@fortawesome/free-solid-svg-icons'
+import { faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faCopyright, faFacebookSquare, faInstagramSquare, faLinkedin, faGithubSquare)
+library.add(faCopyright, faLinkedinIn,faDownload)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('AnimateOnVisible', AnimateOnVisible)

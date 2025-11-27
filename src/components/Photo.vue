@@ -2,7 +2,7 @@
   <div>
     <div class="photo">
         <a>
-            <img :src="getImgUrl(user.photo)" alt="photo"/>
+            <img :src="user.photo.url" alt="photo"/>
         </a>
     </div>
   </div>
@@ -12,11 +12,6 @@
 export default {
     name: 'Photo',
     props: ['user'],
-    methods: {
-        getImgUrl(img) {
-            return require('../assets/img/'+img);
-        },
-    },
 }
 </script>
 
@@ -26,7 +21,6 @@ export default {
             outline: none;
         }
         img {
-            width: 210px;
             height: 260px;
             border-radius: 50%;
             display: inline-block;
